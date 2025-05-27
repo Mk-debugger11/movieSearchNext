@@ -12,6 +12,9 @@ a{
     color: #555555;
     background-color: #000000;
 }
+main{
+    min-height: 550px;
+}
 .main{
     display: flex;
     flex-direction: column;

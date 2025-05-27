@@ -12,7 +12,7 @@ function DetailedMoviePage({ movieId }) {
       setLoading(true);
       try {
         const res = await fetch(
-          `https://api.themoviedb.org/3/movie/574475?api_key=bdfbe253a0002085df2d4abcadaf1f17&language=en-US`
+          `https://api.themoviedb.org/3/movie/${movieId}?api_key=bdfbe253a0002085df2d4abcadaf1f17`
         );
         if (!res.ok) throw new Error("Failed to fetch movie");
         const data = await res.json();
