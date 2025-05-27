@@ -142,10 +142,9 @@ a{
 .movieRowBox{
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     gap: 10px;
     margin-bottom: 25px;
-    width: 94vw;
+    width: 97vw;
     z-index: 0;
     position: relative;
 }
@@ -160,12 +159,17 @@ a{
     width: 94vw;
     height: 300px;
     gap: 7px;
+    transition: transform 0.5s ease;
 }
 .movieRow::-webkit-scrollbar{
     display: none;
 }
+.card{
+    height: 288px;
+}
 .movieFlexImage{
     width: 196px;
+    height: 100%;
 }
 .footer{
     height: 200px;
@@ -199,13 +203,13 @@ a{
     display: flex;
     justify-content: center;
     align-items: center;
-
+    overflow: hidden;
 }
 .paginationButton{
     z-index: 10;
     position: absolute;
-    height: 100px;
-    width: 40px;
+    height: 85%;
+    width: 30px;
     font-size: 40px;
     color: white;
     background-color: rgb(35, 35, 35);
@@ -223,7 +227,177 @@ a{
     border-bottom-right-radius: 20px;
 }
 .paginationButton.right{
-    right: 4px;
+    right: 0px;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
 }
+.preview-container {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    color: white;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-end;
+    padding: 2rem 4rem;
+    box-sizing: border-box;
+  }
+.preview-content {
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+    background-color: transparent;
+  }
+  
+.preview-title {
+    font-size: 3rem;
+    margin-bottom: 0.3rem;
+    background-color: transparent;
+  }
+  
+.preview-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #ccc;
+    background-color: transparent;
+  }
+  
+.preview-description {
+    font-size: 1rem;
+    line-height: 1.4;
+    max-height: 6em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: transparent;
+  }
+  /* DetailedMoviePage.css */
+
+/* DetailedMoviePage.css */
+
+.movie-page {
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #e0e0e0;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    padding: 2rem;
+    box-sizing: border-box;
+  }
+  
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85); /* dark translucent black */
+    z-index: 1;
+  }
+  
+  .content {
+    position: relative;
+    z-index: 2;
+    max-width: 1000px;
+    width: 100%;
+    background-color: rgba(20, 20, 20, 0.8); /* semi-transparent dark bg */
+    padding: 2rem 3rem;
+    border-radius: 12px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+  
+    display: flex;
+    gap: 2rem;
+    color: #e0e0e0;
+  
+    align-items: center;
+  }
+  
+  .poster {
+    flex-shrink: 0;
+    width: 250px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+    background-color: transparent; /* no bg color */
+  }
+  
+  .text {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    background-color: transparent; /* no bg color */
+  }
+  
+  .title {
+    font-size: 2.5rem;
+    margin: 0;
+    color: #fff;
+    background-color: transparent;
+  }
+  
+  .subtitle {
+    font-size: 1.2rem;
+    color: #ccc;
+    margin: 0;
+    background-color: transparent;
+  }
+  
+  .tagline {
+    font-style: italic;
+    color: #aaa;
+    margin: 0.5rem 0;
+    background-color: transparent;
+  }
+  
+  .description {
+    line-height: 1.4;
+    color: #ddd;
+    max-height: 12em;
+    overflow: auto;
+    background-color: transparent;
+  }
+  .additional-info{
+    background-color: transparent;
+  }
+  .additional-info p {
+    margin: 0.3rem 0;
+    color: #bbb;
+    background-color: transparent;
+  }
+  
+  .genres {
+    margin-top: 1rem;
+    background-color: transparent;
+  }
+  
+  .genre-tag {
+    display: inline-block;
+    background-color: #444;
+    padding: 0.3rem 0.7rem;
+    border-radius: 8px;
+    margin-right: 0.6rem;
+    font-size: 0.85rem;
+    color: #eee;
+  }
+  
+  .homepage-btn {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.6rem 1.2rem;
+    background-color: #e50914; /* Netflix red */
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .homepage-btn:hover {
+    background-color: #b00610;
+  }
+  
+  
+  

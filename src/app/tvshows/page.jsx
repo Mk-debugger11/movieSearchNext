@@ -1,9 +1,12 @@
 import React from 'react'
 import MovieRow from '../components/movieFlex'
+import Preview from '../components/previewCarousel'
 function Tvshows() {
   return (
     <div className='main'>
-            <div className="displayMovie"></div>
+            <div className="displayMovie">
+              <Preview movieId={1431}/>
+            </div>
             <MovieRow typeOfMovies="/popular" movieType="Popular Shows" forGenre = "/" endpoints=""/>
             <MovieRow typeOfMovies="/top_rated" movieType="Top Rated" forGenre = "/" endpoints=""/>
             <MovieRow forGenre = "/discover/" movieType="The Sci-Fi Sphere"  typeOfMovies="" endpoints="&with_genres=10765"/>
