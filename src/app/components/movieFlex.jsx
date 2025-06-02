@@ -3,7 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import MovieCardBig from "./movieCardBig";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import useMovieStore from "../store/moviesZustand";
 function MovieRow(props) {
+    const addToHistory = useMovieStore(state => state.addHistory)
     const pathname = usePathname()
     const [movies, setMovies] = useState([])
     const parentContainer = useRef(null)
@@ -75,15 +77,17 @@ function MovieRow(props) {
                     {movies && movies.map((ele, index) => {
                         let imageUrl = `https://image.tmdb.org/t/p/original/${ele.poster_path}`;
                         return (
-                            <Link key={index} href={`/movie/${ele.id}`}>
-                                <MovieCardBig image={imageUrl} ref={movieCard} />
-                            </Link>
-                          );
+                            <div onClick={() => addToHistory(ele)} key={index}>
+                                <Link scroll={true}  href={`/movie/${ele.id}`}>
+                                    <MovieCardBig image={imageUrl} ref={movieCard} />
+                                </Link>
+                            </div>
+                        );
                     })}
                 </div>
                 <button className="paginationButton right" onClick={handleRight} >{`>`}</button>
             </div>
-            </div>
-            )
+        </div>
+    )
 }
-            export default MovieRow;
+export default MovieRow;

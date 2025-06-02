@@ -1,9 +1,12 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import "../globals.css";
-
+import useMovieStore from "../store/moviesZustand";
 function DetailedMoviePage({ movieId }) {
+  const addToWatchlist = useMovieStore(state => state.addToWatchlist)
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [movieId]);
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -51,50 +54,53 @@ function DetailedMoviePage({ movieId }) {
 
   return (
     <div className="movie-page" style={{ backgroundImage: `url(${backdropUrl})` }}>
-    <div className="overlay"></div>
-    <div className="content">
-      <img
-        src={
-          movie.poster_path
-            ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-            : "https://via.placeholder.com/250x375?text=No+Image"
-        }
-        alt={movie.title}
-        className="poster"
-      />
-      <div className="text">
-        <h1 className="title">{movie.title}</h1>
-        <p className="subtitle">
-          {releaseYear} • ★ {rating} / 10
-        </p>
-        <p className="tagline">{movie.tagline}</p>
-        <p className="description">{movie.overview}</p>
+      <div className="overlay"></div>
+      <div className="content">
+        <img
+          src={
+            movie.poster_path
+              ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+              : "https://via.placeholder.com/250x375?text=No+Image"
+          }
+          alt={movie.title}
+          className="poster"
+        />
+        <div className="text">
+          <h1 className="title">{movie.title}</h1>
+          <p className="subtitle">
+            {releaseYear} • ★ {rating} / 10
+          </p>
+          <p className="tagline">{movie.tagline}</p>
+          <p className="description">{movie.overview}</p>
 
-        <div className="additional-info">
-          <p>
-            <strong>Runtime:</strong> {movie.runtime} mins
-          </p>
-          <p>
-            <strong>Budget:</strong>{" "}
-            {movie.budget ? `$${movie.budget.toLocaleString()}` : "Unknown"}
-          </p>
-          <p>
-            <strong>Revenue:</strong>{" "}
-            {movie.revenue ? `$${movie.revenue.toLocaleString()}` : "Unknown"}
-          </p>
-        </div>
+          <div className="additional-info">
+            <p>
+              <strong>Runtime:</strong> {movie.runtime} mins
+            </p>
+            <p>
+              <strong>Budget:</strong>{" "}
+              {movie.budget ? `$${movie.budget.toLocaleString()}` : "Unknown"}
+            </p>
+            <p>
+              <strong>Revenue:</strong>{" "}
+              {movie.revenue ? `$${movie.revenue.toLocaleString()}` : "Unknown"}
+            </p>
+          </div>
 
-        <div className="genres">
-          {movie.genres &&
-            movie.genres.map((genre) => (
-              <span key={genre.id} className="genre-tag">
-                {genre.name}
-              </span>
-            ))}
+          <div className="genres">
+            {movie.genres &&
+              movie.genres.map((genre) => (
+                <span key={genre.id} className="genre-tag">
+                  {genre.name}
+                </span>
+              ))}
+          </div>
+          <button className="watchlistButton" onClick={() => addToWatchlist(movie)}>
+            + Add to Watchlist
+          </button>
         </div>
       </div>
     </div>
-  </div>
   );
 }
 

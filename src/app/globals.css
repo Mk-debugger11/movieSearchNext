@@ -18,7 +18,8 @@ main{
 .main{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
+    padding:0 10px;
 }
 .nav{
     display: flex;
@@ -30,7 +31,11 @@ main{
     padding:15px 35px;
     margin-bottom: 10px;
     box-shadow: 4px 10px 10px rgba(35, 35, 35, 0.6); 
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
+
 .logo{
     color: #e90f21 ;
     display: flex;
@@ -401,6 +406,65 @@ main{
   .homepage-btn:hover {
     background-color: #b00610;
   }
+  .watchlistButton {
+    background-color: #454545;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    margin-top: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+  }
   
+  .watchlistButton:hover {
+    background-color: #323232;
+  }
+  /* public/watchlist.css */
+.watchlist-page {
+    padding: 2rem;
+    color: white;
+  }
   
+  .watchlist-page h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
   
+  .watchlist-grid {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .movie-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .movie-card img {
+    width: 150px;
+    height: auto;
+    border-radius: 0.5rem;
+  }
+  
+  .movie-card .title {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #ddd;
+  }
+.history-page{
+    color:white
+}
+.history-page h1{
+    font-size: 25px;
+}
+.history-flex{
+    display: flex;
+    padding:5px 20px;
+    gap: 10px;
+}
