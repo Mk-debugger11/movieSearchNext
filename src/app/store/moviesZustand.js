@@ -4,20 +4,28 @@ import { persist } from "zustand/middleware"
 const movieStore = (set) => ({
     history: [],
     addHistory: (movie) => {
-        set((state) => ({
-            history: [movie,...state.history]
-        }))
+        set((state) => {
+            const exist = state.history.filter((ele) => ele.id !== movie.id)
+            return {
+                history : [movie,...exist]
+            }
+            
+        })
     },
     watchlist: [],
     addToWatchlist: (movie) => {
-        set((state) => ({
-            watchlist: [...state.watchlist,movie]
-        }))
+        set((state) => {
+            const exist = state.watchlist.find((ele) => ele.id === movie.id)
+            if(!exist){
+                return  { watchlist: [...state.watchlist,movie] }
+            }
+            return {}
+        })
     },
 })
 const useMovieStore = create(
     persist(movieStore,{
-        name: "history"
+        name: "movieStore",
     })
 )
 export default useMovieStore;

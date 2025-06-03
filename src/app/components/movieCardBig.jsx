@@ -1,3 +1,5 @@
+import { lazy } from "react";
+
 function MovieCardBig(props){
     return(
         <div className="card">

@@ -4,10 +4,12 @@ import MovieCardBig from "./movieCardBig";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import useMovieStore from "../store/moviesZustand";
+import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
+import { useInView } from "react-intersection-observer";
 function MovieRow(props) {
     const addToHistory = useMovieStore(state => state.addHistory)
-    const pathname = usePathname()
-    const [movies, setMovies] = useState([])
+
+    // carousel states
     const parentContainer = useRef(null)
     const movieCard = useRef(null)
     const [containerWidth, setContainerWidth] = useState(null)
@@ -15,9 +17,7 @@ function MovieRow(props) {
     const [totalCards, setTotalCards] = useState(0)
     const [distance, setDistance] = useState(0)
     const [viewed, setViewed] = useState(0)
-    // for implementing pagination to the movies list for unlimited scrolling
-    const [currentPage, setPage] = useState(1)
-    const [movieArrayLength, setMovieArrayLength] = useState(0)
+    // carousel states
 
     useEffect(() => {
         const width = parentContainer.current.offsetWidth
@@ -28,15 +28,13 @@ function MovieRow(props) {
         setTotalCards(totalCards)
         console.log(totalCards)
     }, [containerWidth])
+
     function handleRight() {
         const newViewed = viewed + totalCards
         setViewed(newViewed)
         console.log(newViewed)
         const distance = newViewed * cardWidth
         setDistance(distance)
-        if ((newViewed + totalCards) > movieArrayLength) {
-            setPage(prev => prev + 1)
-        }
     }
     function handleLeft() {
         const newViewed = viewed - totalCards
@@ -44,46 +42,58 @@ function MovieRow(props) {
         const distance = newViewed * cardWidth
         setDistance(distance)
     }
-    function handleButtonOpacity() {
-        const button = document.querySelector('.paginationButton');
-        button.style.opacity = 0.8;
-    }
-    function handleButtonOpacity1() {
-        const button = document.querySelector('.paginationButton');
-        button.style.opacity = 0.3;
-    }
-    useEffect(() => {
-        const page = 2;
-        let baseUrl = `https://api.themoviedb.org/3${props.forGenre}movie${props.typeOfMovies}?api_key=bdfbe253a0002085df2d4abcadaf1f17${props.endpoints}&page=${currentPage}`
-        if (pathname === '/tvshows') {
-            baseUrl = `https://api.themoviedb.org/3${props.forGenre}tv${props.typeOfMovies}?api_key=bdfbe253a0002085df2d4abcadaf1f17${props.endpoints}&page=${currentPage}`
-        }
-        fetch(baseUrl)
+    const fetchData = ({ pageParam }) => {
+        let baseUrl = `https://api.themoviedb.org/3${props.forGenre}movie${props.typeOfMovies}?api_key=bdfbe253a0002085df2d4abcadaf1f17${props.endpoints}&page=${pageParam}`
+        return fetch(baseUrl)
             .then((response) => {
                 return response.json()
             })
             .then((data) => {
-                console.log(data)
-                setMovies((prev) => [...prev, ...data.results])
-                setMovieArrayLength(prev => prev + data.results.length)
+                return data.results
             })
-    }, [currentPage])
+    }
+    
+    const { data , fetchNextPage } = useInfiniteQuery({
+        queryKey: ["movies", props.movieType],
+        queryFn: (pageParam) => fetchData(pageParam),
+        initialPageParam: 1,
+        getNextPageParam: (_lastPage, allPages) => {
+            if (allPages.length < 200) {
+                return allPages.length + 1
+            } else {
+                return undefined
+            }
+        },
+        staleTime: 1000 * 60 * 60, 
+        cacheTime: 1000 * 60 * 60 * 24, 
+    })
+    const { ref , inView } = useInView()
+    useEffect(()=>{
+        if(inView){
+            fetchNextPage()
+        }
+    },[inView,fetchNextPage])
+    console.log(data)
     return (
         <div className="movieRowBox" ref={parentContainer}>
             <h3>{props.movieType}</h3>
             <div className="pages">
                 <button className="paginationButton left" onClick={handleLeft} style={{ display: viewed === 0 ? 'none' : 'block' }}>{`<`}</button>
                 <div className="movieRow" style={{ transform: `translateX(-${distance}px)` }}>
-                    {movies && movies.map((ele, index) => {
-                        let imageUrl = `https://image.tmdb.org/t/p/original/${ele.poster_path}`;
-                        return (
-                            <div onClick={() => addToHistory(ele)} key={index}>
-                                <Link scroll={true}  href={`/movie/${ele.id}`}>
-                                    <MovieCardBig image={imageUrl} ref={movieCard} />
-                                </Link>
-                            </div>
-                        );
+                    {data && data.pages.map((ele) => {
+                        return ele.map((movie,index) => {
+                            let imageUrl = `https://image.tmdb.org/t/p/original/${movie.poster_path}`;
+                            return (
+                                <div onClick={() => addToHistory(movie)} key={index}>
+                                    <Link scroll={true} href={`/movie/${movie.id}`}>
+                                        <MovieCardBig image={imageUrl} ref={movieCard} />
+                                    </Link>
+                                </div>
+                            );
+                        })
+
                     })}
+                    <div ref={ref}></div>
                 </div>
                 <button className="paginationButton right" onClick={handleRight} >{`>`}</button>
             </div>
